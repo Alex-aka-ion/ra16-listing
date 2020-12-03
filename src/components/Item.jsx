@@ -1,17 +1,6 @@
 import React from "react";
 
-export default function Item({item}) {
-    const {url, MainImage, title, currency_code, price, quantity, state} = item;
-
-    if (state !== 'active') {
-        return '';
-    }
-
-    let imgUrl = '';
-    if (MainImage && MainImage.url_570xN) {
-        imgUrl = MainImage.url_570xN;
-    }
-
+function getPriceText(price, currency_code) {
     let priceText = `${price} ${currency_code}`;
     if (currency_code === 'USD') {
         priceText = `$${price}`;
@@ -19,6 +8,22 @@ export default function Item({item}) {
     if (currency_code === 'EUR') {
         priceText = `€${price}`;
     }
+    return priceText;
+}
+
+export default function Item({item}) {
+    const {url, MainImage, title, currency_code, price, quantity, state} = item;
+
+    if (state !== 'active') {
+        return null;
+    }
+
+    let imgUrl = '';
+    if (MainImage && MainImage.url_570xN) {
+        imgUrl = MainImage.url_570xN;
+    }
+
+    const priceText = getPriceText(price, currency_code);
 
     let quantityStyle = 'high';
     if (quantity > 10 && quantity <= 20) {
